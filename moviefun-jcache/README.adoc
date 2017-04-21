@@ -1,0 +1,55 @@
+= Moviefun-JCache
+
+This project demonstrates using JCache, CDI and Hazelcast to add a clustered cache to an existing Java EE project.
+
+This GitHub repository features two branches - one showing the application before adding caching (+master+) and one
+after adding caching (+jcache-hazelcast+).
+
+This project makes use of a small CDI extension - https://github.com/tomitribe/jcache-cdi, standard JCache JSR-107
+annotations and interceptors from the JCache reference implementation.
+
+This project aims to show how you can add caching to your application using these tools as simply as possible.
+
+Adding caching to the application requires the following steps:
+
+== Adding dependencies
+
+Add the following dependencies to the project's pom.xml:
+
+[source,xml,numbered]
+----
+    <dependency>
+      <groupId>javax.cache</groupId>
+      <artifactId>cache-api</artifactId>
+      <version>1.0.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.hazelcast</groupId>
+      <artifactId>hazelcast</artifactId>
+      <version>3.4.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.tomitribe</groupId>
+      <artifactId>jcache-cdi</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+----
+
+This example uses Hazelcast as the JCache provider.
+
+== Ensure the project has a +beans.xml+ file:
+
+----
+    <beans xmlns="http://java.sun.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                               http://java.sun.com/xml/ns/javaee/beans_1_0.xsd" />
+----
+
+== Add annotations to the MoviesBean EJB
+
+Note the use of +@CacheResult+, +@CachePut+, +@CacheRemove+.
+
+The +Cache+ instances can also be injected and manipulated directly - for this, the project has used a CDI +Producer+ -
++CacheFactory+. Three caches are injected into fields in MoviesBean, and are cleared directly in the +resetCaches+ method
+to remove any invalid entries when the database is updated.
