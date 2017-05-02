@@ -16,13 +16,11 @@
  */
 package org.superbiz.moviefun.rest;
 
-import org.superbiz.moviefun.Movie;
-import org.superbiz.moviefun.MoviesBean;
+import org.superbiz.moviefun.persistence.Movie;
+import org.superbiz.moviefun.persistence.MoviesBean;
 
-import javax.ejb.EJB;
-import javax.ejb.Lock;
-import javax.ejb.LockType;
-import javax.ejb.Singleton;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -32,16 +30,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
 import java.util.Collection;
 import java.util.List;
 
+@ApplicationScoped
 @Path("movies")
-@Produces({"application/json"})
-@Singleton
-@Lock(LockType.READ)
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class MoviesRest {
-
-    @EJB
+    @Inject
     private MoviesBean service;
 
     @GET
@@ -85,8 +83,8 @@ public class MoviesRest {
 
     @GET
     @Path("count")
+    @Produces(MediaType.TEXT_PLAIN)
     public int count(@QueryParam("field") final String field, @QueryParam("searchTerm") final String searchTerm) {
         return service.count(field, searchTerm);
     }
-
 }

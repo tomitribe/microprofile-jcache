@@ -16,16 +16,18 @@
  */
 package org.superbiz.moviefun.rest;
 
-import org.superbiz.moviefun.Movie;
-import org.superbiz.moviefun.MoviesBean;
+import org.superbiz.moviefun.persistence.Movie;
+import org.superbiz.moviefun.persistence.MoviesBean;
 
-import javax.ejb.EJB;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
+@ApplicationScoped
 @Path("load")
 public class LoadRest {
-    @EJB
+    @Inject
     private MoviesBean moviesBean;
 
     @POST
@@ -38,5 +40,4 @@ public class LoadRest {
         moviesBean.addMovie(new Movie("Zoolander", "Ben Stiller", "Comedy", 6, 2001));
         moviesBean.addMovie(new Movie("Shanghai Noon", "Tom Dey", "Comedy", 7, 2000));
     }
-
 }
