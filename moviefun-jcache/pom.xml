@@ -39,6 +39,7 @@
 
     <!-- Plugins -->
     <plugin.version.war>3.1.0</plugin.version.war>
+    <plugin.version.docker>0.4.13</plugin.version.docker>
 
     <!-- Dependencies -->
     <dependency.version.javaee>7.0</dependency.version.javaee>
@@ -50,7 +51,7 @@
   </properties>
 
   <build>
-    <finalName>moviefun</finalName>
+    <finalName>movie</finalName>
 
     <plugins>
       <plugin>
@@ -109,8 +110,29 @@
         <artifactId>tomee-maven-plugin</artifactId>
         <version>${version.tomee}</version>
         <configuration>
-          <tomeeClassifier>plus</tomeeClassifier>
+          <tomeeClassifier>webprofile</tomeeClassifier>
           <args>-Xmx512m -XX:PermSize=256m</args>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.spotify</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${plugin.version.docker}</version>
+        <configuration>
+          <imageName>docker-repo:5000/tomitribe/pi-demo/server</imageName>
+          <baseImage>radcortez/rpi-tomee:8-jre-7.0.3-webprofile</baseImage>
+          <exposes>
+            <expose>5701</expose>
+          </exposes>
+          <resources>
+            <resource>
+              <targetPath>/usr/local/tomee/webapps</targetPath>
+              <directory>${project.build.directory}</directory>
+              <include>${project.build.finalName}.war</include>
+            </resource>
+          </resources>
+          <cmd>["catalina.sh", "run"]</cmd>
         </configuration>
       </plugin>
     </plugins>
