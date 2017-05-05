@@ -17,7 +17,7 @@
 package org.superbiz.moviefun.cache;
 
 import org.jsr107.ri.annotations.DefaultGeneratedCacheKey;
-import org.superbiz.moviefun.Movie;
+import org.superbiz.moviefun.persistence.Movie;
 
 import javax.cache.annotation.CacheInvocationParameter;
 import javax.cache.annotation.CacheKeyGenerator;

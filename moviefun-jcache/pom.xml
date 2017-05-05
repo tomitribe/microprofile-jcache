@@ -31,10 +31,22 @@
   <packaging>war</packaging>
 
   <properties>
+    <!-- Project -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <tomee.version>1.7.2</tomee.version>
-    <openejb.version>4.7.2</openejb.version>
-    <version.shrinkwrap.resolver>2.1.0</version.shrinkwrap.resolver>
+
+    <version.java>1.8</version.java>
+    <version.tomee>7.0.3</version.tomee>
+
+    <!-- Plugins -->
+    <plugin.version.war>3.1.0</plugin.version.war>
+
+    <!-- Dependencies -->
+    <dependency.version.javaee>7.0</dependency.version.javaee>
+    <dependency.version.jcache>1.0.0</dependency.version.jcache>
+    <dependency.version.jcache-cdi>0.1-SNAPSHOT</dependency.version.jcache-cdi>
+    <dependency.version.hazelcast>3.4.1</dependency.version.hazelcast>
+
+    <dependency.version.junit>4.12</dependency.version.junit>
   </properties>
 
   <build>
@@ -42,82 +54,16 @@
 
     <plugins>
       <plugin>
-        <groupId>com.googlecode.jslint4java</groupId>
-        <artifactId>jslint4java-maven-plugin</artifactId>
-        <version>2.0.5</version>
-        <configuration>
-          <failOnError>true</failOnError>
-          <options>
-            <vars>true</vars>
-            <unparam>true</unparam>
-            <predef>define,require,requirejs,window,Backbone,_,$,Handlebars,APP_CONFIG</predef>
-            <indent>4</indent>
-          </options>
-          <sourceFolders>
-            <sourceFolder>${basedir}/src/main/webapp/app/js</sourceFolder>
-          </sourceFolders>
-          <excludes>
-            <exclude>**/typeahead*</exclude>
-          </excludes>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>prepare-package</phase>
-            <goals>
-              <goal>lint</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <version>2.8</version>
-        <executions>
-          <execution>
-            <id>copy-test-libs</id>
-            <phase>process-test-resources</phase>
-            <configuration>
-              <artifactItems>
-                <artifactItem>
-                  <groupId>javax.servlet</groupId>
-                  <artifactId>jstl</artifactId>
-                  <version>1.2</version>
-                </artifactItem>
-                <artifactItem>
-                  <groupId>taglibs</groupId>
-                  <artifactId>standard</artifactId>
-                  <version>1.1.2</version>
-                </artifactItem>
-              </artifactItems>
-              <outputDirectory>
-                ${project.build.directory}/test-libs
-              </outputDirectory>
-              <stripVersion>true</stripVersion>
-            </configuration>
-            <goals>
-              <goal>copy</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.17</version>
-        <configuration>
-          <reuseForks>false</reuseForks>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>${version.java}</source>
+          <target>${version.java}</target>
+          <debug>true</debug>
+          <optimize>true</optimize>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>
@@ -151,269 +97,71 @@
           </execution>
         </executions>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>${plugin.version.war}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.tomee.maven</groupId>
+        <artifactId>tomee-maven-plugin</artifactId>
+        <version>${version.tomee}</version>
+        <configuration>
+          <tomeeClassifier>plus</tomeeClassifier>
+          <args>-Xmx512m -XX:PermSize=256m</args>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
-  <dependencyManagement>
-    <dependencies>
-      <!-- Override dependency resolver with test version. This must go *BEFORE*
-        the Arquillian BOM. -->
-      <dependency>
-        <groupId>org.jboss.shrinkwrap.resolver</groupId>
-        <artifactId>shrinkwrap-resolver-bom</artifactId>
-        <version>${version.shrinkwrap.resolver}</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-      <!-- Now pull in our server-based unit testing framework -->
-      <dependency>
-        <groupId>org.jboss.arquillian</groupId>
-        <artifactId>arquillian-bom</artifactId>
-        <version>1.1.5.Final</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-
-
   <dependencies>
     <dependency>
-      <groupId>org.apache.openejb</groupId>
+      <groupId>org.apache.tomee</groupId>
       <artifactId>javaee-api</artifactId>
-      <version>6.0-6</version>
+      <version>${dependency.version.javaee}</version>
       <scope>provided</scope>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.openejb</groupId>
-      <artifactId>arquillian-tomee-embedded</artifactId>
-      <version>${tomee.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.openejb</groupId>
-      <artifactId>tomee-jaxrs</artifactId>
-      <version>${tomee.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.openejb</groupId>
-      <artifactId>openejb-core</artifactId>
-      <version>${openejb.version}</version>
-      <scope>test</scope>
-    </dependency>
+
     <dependency>
       <groupId>javax.cache</groupId>
       <artifactId>cache-api</artifactId>
-      <version>1.0.0</version>
-      <!--<scope>provided</scope>-->
+      <version>${dependency.version.jcache}</version>
     </dependency>
+
     <dependency>
       <groupId>com.hazelcast</groupId>
       <artifactId>hazelcast</artifactId>
-      <version>3.4.1</version>
-      <!--<scope>provided</scope>-->
+      <version>${dependency.version.hazelcast}</version>
     </dependency>
+
     <dependency>
       <groupId>org.tomitribe</groupId>
       <artifactId>jcache-cdi</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>${dependency.version.jcache-cdi}</version>
     </dependency>
+
     <dependency>
-      <groupId>org.jboss.arquillian.junit</groupId>
-      <artifactId>arquillian-junit-container</artifactId>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${dependency.version.junit}</version>
       <scope>test</scope>
     </dependency>
+
     <dependency>
-      <groupId>org.jboss.shrinkwrap.resolver</groupId>
-      <artifactId>shrinkwrap-resolver-depchain</artifactId>
-      <type>pom</type>
+      <groupId>org.apache.tomee</groupId>
+      <artifactId>arquillian-tomee-embedded</artifactId>
+      <version>${version.tomee}</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.openejb</groupId>
-      <artifactId>ziplock</artifactId>
-      <version>${tomee.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>backbonejs</artifactId>
-      <version>1.0.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>bootstrap</artifactId>
-      <version>3.1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>handlebars</artifactId>
-      <version>1.2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>jquery</artifactId>
-      <version>2.1.0-1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>json2</artifactId>
-      <version>20110223</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>less</artifactId>
-      <version>1.6.0-1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>requirejs</artifactId>
-      <version>2.1.10</version>
-    </dependency>
-    <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>requirejs-text</artifactId>
-      <version>2.0.10</version>
-    </dependency>
-    <!-- Dependencies for Jackson CXF provider -->
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-core-asl</artifactId>
-      <version>1.9.13</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-jaxrs</artifactId>
-      <version>1.9.13</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-mapper-asl</artifactId>
-      <version>1.9.13</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-xc</artifactId>
-      <version>1.9.13</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.openjpa</groupId>
+          <artifactId>openjpa</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>database</id>
-      <dependencies>
-        <dependency>
-          <groupId>org.hsqldb</groupId>
-          <artifactId>hsqldb</artifactId>
-          <version>2.3.2</version>
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>1.2.1</version>
-            <configuration>
-              <mainClass>org.hsqldb.server.Server</mainClass>
-              <arguments>
-                <argument>--database.0</argument>
-                <argument>file:target/data</argument>
-              </arguments>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-
-    <profile>
-      <id>server1</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.openejb.maven</groupId>
-            <artifactId>tomee-maven-plugin</artifactId>
-            <version>${tomee.version}</version>
-            <configuration>
-              <catalinaBase>${project.build.directory}/server1</catalinaBase>
-              <tomeeClassifier>plus</tomeeClassifier>
-              <args>-Xmx512m -XX:PermSize=256m</args>
-              <config>${project.basedir}/src/main/tomee/</config>
-              <tomeeHttpPort>8080</tomeeHttpPort>
-              <tomeeAjpPort>8009</tomeeAjpPort>
-              <tomeeShutdownPort>8005</tomeeShutdownPort>
-              <synchronization>
-                <extensions>
-                  <extension>.class</extension>
-                  <extension>.jsp</extension>
-                  <extension>.js</extension>
-                  <extension>.html</extension>
-                  <extension>.css</extension>
-                  <extension>.handlebars</extension>
-                </extensions>
-              </synchronization>
-              <reloadOnUpdate>true</reloadOnUpdate>
-              <systemVariables>
-                <movieDatabase>new://Resource?type=javax.sql.DataSource</movieDatabase>
-                <movieDatabase.JdbcDriver>org.hsqldb.jdbcDriver</movieDatabase.JdbcDriver>
-                <movieDatabase.JdbcUrl>jdbc:hsqldb:hsql://localhost/</movieDatabase.JdbcUrl>
-                <movieDatabase.UserName>sa</movieDatabase.UserName>
-                <movieDatabase.Password></movieDatabase.Password>
-              </systemVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>server2</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.openejb.maven</groupId>
-            <artifactId>tomee-maven-plugin</artifactId>
-            <version>${tomee.version}</version>
-            <configuration>
-              <catalinaBase>${project.build.directory}/server2</catalinaBase>
-              <tomeeClassifier>plus</tomeeClassifier>
-              <args>-Xmx512m -XX:PermSize=256m</args>
-              <config>${project.basedir}/src/main/tomee/</config>
-              <tomeeHttpPort>9080</tomeeHttpPort>
-              <tomeeAjpPort>9009</tomeeAjpPort>
-              <tomeeShutdownPort>9005</tomeeShutdownPort>
-              <synchronization>
-                <extensions>
-                  <extension>.class</extension>
-                  <extension>.jsp</extension>
-                  <extension>.js</extension>
-                  <extension>.html</extension>
-                  <extension>.css</extension>
-                  <extension>.handlebars</extension>
-                </extensions>
-              </synchronization>
-              <reloadOnUpdate>true</reloadOnUpdate>
-              <systemVariables>
-                <movieDatabase>new://Resource?type=javax.sql.DataSource</movieDatabase>
-                <movieDatabase.JdbcDriver>org.hsqldb.jdbcDriver</movieDatabase.JdbcDriver>
-                <movieDatabase.JdbcUrl>jdbc:hsqldb:hsql://localhost/</movieDatabase.JdbcUrl>
-                <movieDatabase.UserName>sa</movieDatabase.UserName>
-                <movieDatabase.Password></movieDatabase.Password>
-              </systemVariables>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-  </profiles>
 
   <repositories>
     <repository>

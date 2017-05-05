@@ -14,7 +14,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package org.superbiz.moviefun;
+package org.superbiz.moviefun.persistence;
 
 import org.superbiz.moviefun.cache.MovieCache;
 import org.superbiz.moviefun.cache.MovieIdCacheKeyGenerator;
@@ -25,9 +25,7 @@ import javax.cache.annotation.CachePut;
 import javax.cache.annotation.CacheRemove;
 import javax.cache.annotation.CacheResult;
 import javax.cache.annotation.CacheValue;
-import javax.ejb.Lock;
-import javax.ejb.LockType;
-import javax.ejb.Singleton;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,14 +36,18 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.EntityType;
+import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Singleton
-@Lock(LockType.READ)
+import static javax.transaction.Transactional.TxType.REQUIRED;
+import static javax.transaction.Transactional.TxType.SUPPORTS;
+
+@ApplicationScoped
+@Transactional(SUPPORTS)
 public class MoviesBean {
 
     @Inject
@@ -70,22 +72,25 @@ public class MoviesBean {
     }
 
     @CacheResult(cacheName = "movieById")
-    public org.superbiz.moviefun.Movie find(@CacheKey final Long id) {
-        return entityManager.find(org.superbiz.moviefun.Movie.class, id);
+    public Movie find(@CacheKey final Long id) {
+        return entityManager.find(Movie.class, id);
     }
 
+    @Transactional(REQUIRED)
     @CachePut(cacheName = "movieById", cacheKeyGenerator = MovieIdCacheKeyGenerator.class)
     public void addMovie(@CacheKey @CacheValue final Movie movie) {
         resetCaches();
         entityManager.persist(movie);
     }
 
+    @Transactional(REQUIRED)
     @CachePut(cacheName = "movieById", cacheKeyGenerator = MovieIdCacheKeyGenerator.class)
     public void editMovie(@CacheKey @CacheValue final Movie movie) {
         resetCaches();
         entityManager.merge(movie);
     }
 
+    @Transactional(REQUIRED)
     @CacheRemove(cacheName = "movieById")
     public void deleteMovie(final long id) {
         resetCaches();
