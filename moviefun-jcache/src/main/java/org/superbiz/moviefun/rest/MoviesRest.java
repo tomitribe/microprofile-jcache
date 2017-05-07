@@ -23,6 +23,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -49,8 +50,11 @@ public class MoviesRest {
     }
 
     @GET
-    public List<Movie> getMovies(@QueryParam("first") final Integer first, @QueryParam("max") final Integer max,
-                                 @QueryParam("field") final String field, @QueryParam("searchTerm") final String searchTerm) {
+    public List<Movie> getMovies(@QueryParam("first") final Integer first,
+                                 @DefaultValue("20")
+                                 @QueryParam("max") final Integer max,
+                                 @QueryParam("field") final String field,
+                                 @QueryParam("searchTerm") final String searchTerm) {
         return service.getMovies(first, max, field, searchTerm);
     }
 
