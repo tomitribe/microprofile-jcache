@@ -103,6 +103,9 @@
         <configuration>
           <tomeeClassifier>webprofile</tomeeClassifier>
           <args>-Xmx512m -XX:PermSize=256m</args>
+          <tomeeHttpPort>9080</tomeeHttpPort>
+          <tomeeAjpPort>9009</tomeeAjpPort>
+          <tomeeShutdownPort>9005</tomeeShutdownPort>
         </configuration>
       </plugin>
 

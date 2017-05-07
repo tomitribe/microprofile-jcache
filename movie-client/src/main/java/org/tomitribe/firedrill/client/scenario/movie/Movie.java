@@ -19,7 +19,6 @@ package org.tomitribe.firedrill.client.scenario.movie;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * @author Roberto Cortez
@@ -107,21 +106,5 @@ public class Movie {
                ", genre='" + genre + '\'' +
                ", rating=" + rating +
                '}';
-    }
-
-    @XmlRootElement(name = "movie")
-    @XmlAccessorType(XmlAccessType.FIELD)
-    public static class MovieWrapper {
-        @XmlElement
-        private Movie movie;
-
-        public MovieWrapper(final Movie movie) {
-            this.movie = movie;
-        }
-
-        @Override
-        public String toString() {
-            return movie.toString();
-        }
     }
 }

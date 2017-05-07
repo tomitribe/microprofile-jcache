@@ -21,18 +21,29 @@ import com.github.javafaker.Faker;
 import org.tomitribe.firedrill.client.scenario.Endpoint;
 import org.tomitribe.firedrill.client.scenario.ScenarioInvoker;
 import org.tomitribe.firedrill.client.scenario.WeightedRandomResult;
+import org.tomitribe.sabot.Config;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static java.util.Collections.shuffle;
 import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
+import static javax.ws.rs.client.Entity.json;
+import static javax.ws.rs.client.Entity.text;
 import static org.tomitribe.firedrill.client.scenario.Endpoint.endpoint;
+import static org.tomitribe.firedrill.client.scenario.Endpoint.endpointWithEntity;
+import static org.tomitribe.firedrill.client.scenario.Endpoint.endpointWithTemplates;
 
 /**
  * @author Roberto Cortez
@@ -46,9 +57,9 @@ public class MovieScenario extends ScenarioInvoker {
     protected List<Endpoint> getEndpoints() {
         return Stream.of(endpoint("movie/rest/movies", "GET"),
                          endpoint("movie/rest/movies/count", "GET"),
-                         endpoint("movie/rest/movies", "POST", this::generatePostData),
-                         endpoint("movie/rest/movies/1", "DELETE"),
-                         endpoint("movie/rest/movies/1", "GET"))
+                         endpointWithEntity("movie/rest/movies", "POST", this::createMovie),
+                         endpointWithTemplates("movie/rest/movies/{id}", "DELETE", this::deleteMovie),
+                         endpointWithTemplates("movie/rest/movies/{id}", "GET", this::findMovie))
                      .collect(collectingAndThen(toList(), Collections::unmodifiableList));
     }
 
@@ -69,16 +80,40 @@ public class MovieScenario extends ScenarioInvoker {
         return new WeightedRandomResult<>(endpoints);
     }
 
-    private Object generatePostData() {
+    private Entity createMovie() {
         if (Math.random() * 100 < 95) {
             final Book book = faker.book();
-            return new Movie.MovieWrapper(new Movie(book.author(),
-                                                    book.title(),
-                                                    faker.number().numberBetween(1900, 2017),
-                                                    book.genre(),
-                                                    faker.number().numberBetween(1, 10)));
+            return json(new Movie(book.author(),
+                                  book.title(),
+                                  faker.number().numberBetween(1900, 2017),
+                                  book.genre(),
+                                  faker.number().numberBetween(1, 10)));
         } else {
-            return "";
+            return text("");
         }
+    }
+
+    @Inject
+    @Config("movie.server")
+    private String targetUrl;
+    @Inject
+    private Client client;
+
+    private Map<String, Object> deleteMovie() {
+        final HashMap<String, Object> templates = new HashMap<>();
+        templates.put("id", getRandomMovie());
+        return templates;
+    }
+
+    private Map<String, Object> findMovie() {
+        final HashMap<String, Object> templates = new HashMap<>();
+        templates.put("id", getRandomMovie());
+        return templates;
+    }
+
+    private Integer getRandomMovie() {
+        final WebTarget webTarget = client.target(targetUrl).path("movie/rest/movies").queryParam("max", 50);
+        final List<Movie> movies = webTarget.request().get(new GenericType<List<Movie>>() {});
+        return movies.stream().findAny().map(Movie::getId).orElse(1);
     }
 }

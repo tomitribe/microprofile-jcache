@@ -17,6 +17,7 @@
 package org.tomitribe.firedrill.client;
 
 import org.tomitribe.firedrill.client.scenario.movie.MovieScenario;
+import org.tomitribe.sabot.Config;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -37,12 +38,14 @@ public class Initializer {
     @Inject
     private MovieScenario movieScenario;
 
+    @Inject
+    @Config(value = "movie.client.threads", defaultValue = "5")
+    private Integer targetUrl;
+
     @PostConstruct
     void postConstruct() {
-        mes.execute(movieScenario);
-        mes.execute(movieScenario);
-        mes.execute(movieScenario);
-        mes.execute(movieScenario);
-        mes.execute(movieScenario);
+        for (int i = 0; i < targetUrl; i++) {
+            mes.execute(movieScenario);
+        }
     }
 }

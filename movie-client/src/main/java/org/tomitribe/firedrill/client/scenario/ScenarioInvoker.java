@@ -37,7 +37,7 @@ public abstract class ScenarioInvoker implements Runnable {
     private static Logger logger = Logger.getLogger(ScenarioInvoker.class.getName());
 
     @Inject
-    @Config("tag.server")
+    @Config("movie.server")
     private String targetUrl;
     @Inject
     private Client client;
@@ -63,12 +63,12 @@ public abstract class ScenarioInvoker implements Runnable {
         while (execute) {
             try {
                 final Endpoint endpoint = endpointsToExecute.get();
-                final WebTarget webTarget = client.target(targetUrl).path(endpoint.getPath());
+                final WebTarget webTarget = client.target(targetUrl).path(endpoint.getPath()).resolveTemplates(endpoint.getTemplates());
                 final Response response = webTarget.request().method(endpoint.getMethod(), endpoint.getEntity());
                 logger.info(format("%s - %s - %d", endpoint.getMethod(), webTarget.getUri(), response.getStatus()));
                 sleep();
             } catch (final Exception e) {
-                // Continue
+                e.printStackTrace();
             }
         }
     }
