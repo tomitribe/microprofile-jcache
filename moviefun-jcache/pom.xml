@@ -46,6 +46,7 @@
     <dependency.version.jcache>1.0.0</dependency.version.jcache>
     <dependency.version.jcache-cdi>0.1-SNAPSHOT</dependency.version.jcache-cdi>
     <dependency.version.hazelcast>3.4.1</dependency.version.hazelcast>
+    <dependency.version.mysql>5.1.42</dependency.version.mysql>
 
     <dependency.version.junit>4.12</dependency.version.junit>
   </properties>
@@ -111,7 +112,7 @@
         <version>${version.tomee}</version>
         <configuration>
           <tomeeClassifier>webprofile</tomeeClassifier>
-          <args>-Xmx512m -XX:PermSize=256m</args>
+          <args>-Xmx512m -XX:PermSize=256m -Dhazelcast.network.public-address=127.0.0.1</args>
         </configuration>
       </plugin>
 
@@ -162,6 +163,12 @@
       <groupId>org.tomitribe</groupId>
       <artifactId>jcache-cdi</artifactId>
       <version>${dependency.version.jcache-cdi}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${dependency.version.mysql}</version>
     </dependency>
 
     <dependency>
