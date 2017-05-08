@@ -42,7 +42,9 @@ To generate the certificates:
 Run the local Docker Registry:
 - docker run -d -p 5000:5000 --restart=always --name docker-repo -v `pwd`/certs:/certs -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/docker-repo.crt -e REGISTRY_HTTP_TLS_KEY=/certs/docker-repo.key registry:2
 
-- The self signed certificates need to be added to the PI's so Docker can downloads images from the local Docker Registry.
+- The self signed certificates need to be added to the PI's so Docker can downloads images from the local Docker 
+Registry. They also need to be added to the local Docker Registry host. For Macs, the easiest way is to add the address 
+(docker-repo:5000), in the Mac Docker Daemon / Preferences / Daemon / Insecure Registries.
 
 ## Setup PI's
 Run the following Ansible playbooks in order:
