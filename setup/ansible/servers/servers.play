@@ -1,0 +1,20 @@
+---
+- hosts: servers
+  gather_facts: no
+  remote_user: pirate
+  become: yes
+  become_method: sudo
+
+  tasks:
+  - name: run servers
+    docker_container:
+      name: server
+      image: docker-repo:5000/tomitribe/pi-demo/server
+      state: started
+      restart: yes
+      pull: true
+      published_ports:
+        - 80:8080
+        - 5701:5701
+      env:
+          JAVA_OPTS: "-Dhazelcast.network.public-address={{inventory_hostname}}"
