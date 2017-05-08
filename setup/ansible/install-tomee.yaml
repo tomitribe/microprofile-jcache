@@ -9,4 +9,5 @@
   - name: download tomee
     docker_image:
       name: docker-repo:5000/radcortez/rpi-tomee
-      tag: 8-jre-7.0.3-webprofile
+      tag: 8-jre-7.0.3-metrics
+      

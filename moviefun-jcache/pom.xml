@@ -122,7 +122,7 @@
         <version>${plugin.version.docker}</version>
         <configuration>
           <imageName>docker-repo:5000/tomitribe/pi-demo/server</imageName>
-          <baseImage>radcortez/rpi-tomee:8-jre-7.0.3-webprofile</baseImage>
+          <baseImage>radcortez/rpi-tomee:8-jre-7.0.3-metrics</baseImage>
           <exposes>
             <expose>5701</expose>
           </exposes>

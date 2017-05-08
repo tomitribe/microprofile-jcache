@@ -28,9 +28,14 @@ pi-grom-server-02
 pi-grom-database
 pi-grom-load-balancer
 
+[grom:vars]
+dc=grom
+
 [thrall]
 pi-thrall-server-01
 pi-thrall-server-02
 pi-thrall-database
 pi-thrall-load-balancer
 
+[thrall:vars]
+dc=thrall
