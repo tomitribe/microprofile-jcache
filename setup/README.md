@@ -31,12 +31,12 @@ Ansible:
  - ansible -i hosts servers -m ping
  - ansible -i hosts clients -m ping
  - ansible -i hosts load-balancers -m ping
- - ansible-playbook load-balancers.play -i hosts -f 2
- - ansible-playbook install-tomee.play -i hosts -f 8
- - ansible-playbook servers.play -i ../hosts -f 4
- - ansible-playbook clients.play -i ../hosts -f 3
- - ansible-playbook load-balancers.play -i ../hosts -f 3
- - ansible-playbook install-mysql.play -i ../hosts -f 2
+ - ansible-playbook load-balancers.yaml -i hosts -f 2
+ - ansible-playbook install-tomee.yaml -i hosts -f 8
+ - ansible-playbook servers.yaml -i ../hosts -f 4
+ - ansible-playbook clients.yaml -i ../hosts -f 3
+ - ansible-playbook load-balancers.yaml -i ../hosts -f 3
+ - ansible-playbook install-mysql.yaml -i ../hosts -f 2
  - ansible -i hosts servers,clients -m docker_image -a "name=radcortez/rpi-tomee:8-jre-7.0.3-plus state=absent force=yes"
  - ansible -i hosts clients -m docker_container -a "name=client state=stopped"
  - ansible -i hosts servers -m docker_container -a "name=server state=stopped"
