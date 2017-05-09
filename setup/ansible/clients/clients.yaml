@@ -13,4 +13,5 @@
       state: started
       restart: yes
       pull: true
-
+      env:
+        JAVA_OPTS: "-Dmovie.client.readonly=true"

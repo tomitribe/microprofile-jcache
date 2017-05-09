@@ -53,6 +53,10 @@ public class MovieScenario extends ScenarioInvoker {
     @Inject
     private Faker faker;
 
+    @Inject
+    @Config(value = "movie.client.readonly", defaultValue = "false")
+    private Boolean readonly;
+
     @Override
     protected List<Endpoint> getEndpoints() {
         return Stream.of(endpoint("movie/rest/movies", "GET"),
@@ -75,7 +79,10 @@ public class MovieScenario extends ScenarioInvoker {
                                   list.add(endpoint);
                               }, ArrayList::addAll);
 
-        endpoints.addAll(getEndpoints());
+        if (! readonly) {
+            endpoints.addAll(getEndpoints());
+        }
+
         shuffle(endpoints);
         return new WeightedRandomResult<>(endpoints);
     }
