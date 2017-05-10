@@ -13,6 +13,7 @@
       image: docker-repo:5000/tomitribe/pi-demo/server
       state: started
       restart: yes
+      restart_policy: always
       pull: true
       published_ports:
         - 80:8080

@@ -9,7 +9,7 @@
   - name: download haproxy
     docker_image:
       name: hypriot/rpi-haproxy
-      tag: latest        
+      tag: latest
 
   - name: create / verify conf dir exists
     file: path=/usr/local/share/haproxy/ state=directory
@@ -24,7 +24,7 @@
     copy:
       src: haproxy.cfg.thrall
       dest: /usr/local/share/haproxy/haproxy.cfg
-    when: inventory_hostname == "pi-thrall-load-balancer"	
+    when: inventory_hostname == "pi-thrall-load-balancer"
 
   - name: copy main configuration
     copy:
@@ -38,7 +38,8 @@
       image: hypriot/rpi-haproxy
       state: started
       restart: yes
-      volumes: /usr/local/share/haproxy:/haproxy-override	
+      restart_policy: always
+      volumes: /usr/local/share/haproxy:/haproxy-override
       published_ports:
         - 80:80
         - 5000:5000

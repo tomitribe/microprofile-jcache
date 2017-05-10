@@ -11,6 +11,7 @@
       name: database
       image: hypriot/rpi-mysql
       state: started
+      restart_policy: always
       published_ports:
         - 3306:3306
       env:
@@ -18,4 +19,3 @@
           MYSQL_DATABASE: movie
           MYSQL_USER: movie
           MYSQL_PASSWORD: movie
-          
