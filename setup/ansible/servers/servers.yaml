@@ -19,4 +19,4 @@
         - 80:8080
         - 5701:5701
       env:
-          JAVA_OPTS: "-Dhazelcast.network.public-address={{inventory_hostname}} -Dtribe.features.monitor.database.enabled=true -DMetricsService.dataCenter={{dc}}"
+          JAVA_OPTS: "-Xmx512m -Dhazelcast.network.public-address={{inventory_hostname}} -Dtribe.features.monitor.database.enabled=true -DMetricsService.dataCenter={{dc}}"
