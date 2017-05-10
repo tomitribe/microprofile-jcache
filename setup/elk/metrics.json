@@ -1,0 +1,663 @@
+{
+  "order": 0,
+  "template": "tribe-metrics-*",
+  "settings": {
+    "index": {
+      "number_of_shards": "1"
+    }
+  },
+  "mappings": {
+    "event": {
+      "properties": {
+        "throttling_rate_window_seconds": {
+          "type": "long"
+        },
+        "throttling_rate_window_remaining_seconds": {
+          "type": "long"
+        },
+        "cpu_info": {
+          "properties": {
+            "softirq_time_percent": {
+              "type": "long"
+            },
+            "stolen_time_percent": {
+              "type": "long"
+            },
+            "nice_time_percent": {
+              "type": "long"
+            },
+            "user_time_percent": {
+              "type": "long"
+            },
+            "sys_time_percent": {
+              "type": "long"
+            },
+            "combined_percent": {
+              "type": "long"
+            },
+            "wait_time_percent": {
+              "type": "long"
+            },
+            "irq_time_percent": {
+              "type": "long"
+            },
+            "idle_time_percent": {
+              "type": "long"
+            }
+          }
+        },
+        "error_info": {
+          "properties": {
+            "code": {
+              "type": "long"
+            },
+            "message": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "type": {
+              "index": "not_analyzed",
+              "type": "string"
+            }
+          }
+        },
+        "fs_info": {
+          "properties": {
+            "used_mb": {
+              "type": "long"
+            },
+            "inodes_used": {
+              "type": "long"
+            },
+            "inodes_used_percent": {
+              "type": "long"
+            },
+            "inodes_total": {
+              "type": "long"
+            },
+            "total_mb": {
+              "type": "long"
+            },
+            "available": {
+              "type": "long"
+            },
+            "inodes_free": {
+              "type": "long"
+            },
+            "free_mb": {
+              "type": "long"
+            },
+            "used_percent": {
+              "type": "long"
+            }
+          }
+        },
+        "tomcat": {
+          "type": "string"
+        },
+        "route_info": {
+          "properties": {
+            "elapsed_sec": {
+              "type": "double"
+            },
+            "http_method": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "service_name": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "elapsed_ns": {
+              "type": "double"
+            },
+            "route_description": {
+              "index": "not_analyzed",
+              "type": "string"
+            }
+          }
+        },
+        "ajp_connector": {
+          "properties": {
+            "total": {
+              "type": "long"
+            },
+            "idle": {
+              "type": "long"
+            },
+            "active": {
+              "type": "long"
+            }
+          }
+        },
+        "source": {
+          "type": "string"
+        },
+        "oauth2": {
+          "type": "string"
+        },
+        "server_version": {
+          "type": "string"
+        },
+        "client_id": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "path": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "elapsed_sec": {
+          "type": "double"
+        },
+        "fs_used_percent": {
+          "type": "long"
+        },
+        "application_name": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "thread_pool_in_use": {
+          "type": "long"
+        },
+        "throttling_organization_name": {
+          "type": "string"
+        },
+        "http_connection_pool_available": {
+          "type": "long"
+        },
+        "http_connector": {
+          "properties": {
+            "total": {
+              "type": "long"
+            },
+            "idle": {
+              "type": "long"
+            },
+            "active": {
+              "type": "long"
+            }
+          }
+        },
+        "server_ip": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "client_ip": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "id": {
+          "type": "long"
+        },
+        "service_path": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "request_bytes": {
+          "type": "long"
+        },
+        "jvm": {
+          "type": "string"
+        },
+        "memory_info": {
+          "properties": {
+            "page_out": {
+              "type": "long"
+            },
+            "free_percent": {
+              "type": "long"
+            },
+            "used_mb": {
+              "type": "long"
+            },
+            "total_mb": {
+              "type": "long"
+            },
+            "actual_free_mb": {
+              "type": "long"
+            },
+            "swap_total_mb": {
+              "type": "long"
+            },
+            "free_mb": {
+              "type": "long"
+            },
+            "heap_used_mb": {
+              "type": "long"
+            },
+            "swap_used_mb": {
+              "type": "long"
+            },
+            "page_in": {
+              "type": "long"
+            },
+            "swap_free_mb": {
+              "type": "long"
+            },
+            "actual_used_mb": {
+              "type": "long"
+            },
+            "used_percent": {
+              "type": "long"
+            },
+            "non_heap_used_mb": {
+              "type": "long"
+            }
+          }
+        },
+        "method": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "key_id": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "service_name": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "thread_pool_available": {
+          "type": "long"
+        },
+        "cpu": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "response_bytes": {
+          "type": "long"
+        },
+        "http_reason": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "authentication_info": {
+          "properties": {
+            "result": {
+              "type": "string"
+            },
+            "password_grant": {
+              "properties": {
+                "client_id": {
+                  "type": "string"
+                },
+                "username": {
+                  "index": "not_analyzed",
+                  "type": "string"
+                }
+              }
+            },
+            "client_credentials_grant": {
+              "properties": {
+                "client_id": {
+                  "index": "not_analyzed",
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
+            },
+            "refresh_grant": {
+              "properties": {
+                "refresh_token": {
+                  "type": "string"
+                }
+              }
+            },
+            "denied": {
+              "properties": {
+                "condition": {
+                  "index": "not_analyzed",
+                  "type": "string"
+                },
+                "description": {
+                  "index": "not_analyzed",
+                  "type": "string"
+                },
+                "error": {
+                  "index": "not_analyzed",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "elapsed_ns": {
+          "type": "double"
+        },
+        "name": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "errors": {
+          "type": "long"
+        },
+        "throttling_concurrent_limit": {
+          "type": "long"
+        },
+        "request": {
+          "type": "string"
+        },
+        "server_name": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "memory": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "jvm_info": {
+          "properties": {
+            "daemon_threads": {
+              "type": "long"
+            },
+            "current_classes_loaded": {
+              "type": "long"
+            },
+            "heap_memory_usage_mb": {
+              "type": "long"
+            },
+            "total_threads": {
+              "type": "long"
+            },
+            "commited_memory_kb": {
+              "type": "double"
+            },
+            "total_classes_unloaded": {
+              "type": "long"
+            },
+            "process_cpu_time": {
+              "type": "string"
+            },
+            "non_heap_memory_usage_mb": {
+              "type": "long"
+            },
+            "uptime": {
+              "type": "string"
+            },
+            "connection_name": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "gc_time": {
+              "properties": {
+                "concurrent_mark_sweep_sec": {
+                  "type": "long"
+                },
+                "par_new_sec": {
+                  "type": "long"
+                }
+              }
+            },
+            "max_heap_size_kb": {
+              "type": "double"
+            },
+            "total_compile_time": {
+              "type": "string"
+            },
+            "current_heap_size_kb": {
+              "type": "double"
+            },
+            "peak_threads": {
+              "type": "long"
+            },
+            "virtual_machine": {
+              "type": "string"
+            },
+            "peding_finalization": {
+              "type": "long"
+            },
+            "total_classes_loaded": {
+              "type": "long"
+            },
+            "live_threads": {
+              "type": "long"
+            }
+          }
+        },
+        "application_type": {
+          "type": "string"
+        },
+        "sub_category": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "https_connector": {
+          "properties": {
+            "total": {
+              "type": "long"
+            },
+            "idle": {
+              "type": "long"
+            },
+            "active": {
+              "type": "long"
+            }
+          }
+        },
+        "error": {
+          "type": "string"
+        },
+        "fs": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "memory_used_percent": {
+          "type": "long"
+        },
+        "network_info": {
+          "properties": {
+            "tx_packets": {
+              "type": "long"
+            },
+            "rx_dropped": {
+              "type": "long"
+            },
+            "tx_carrier": {
+              "type": "long"
+            },
+            "speed": {
+              "type": "long"
+            },
+            "rx_errors": {
+              "type": "long"
+            },
+            "rx_packets": {
+              "type": "long"
+            },
+            "tx_errors": {
+              "type": "long"
+            },
+            "rx_frame": {
+              "type": "long"
+            },
+            "rx_overruns": {
+              "type": "long"
+            },
+            "tx_collisions": {
+              "type": "long"
+            },
+            "tx_dropped": {
+              "type": "long"
+            },
+            "rx_bytes": {
+              "type": "long"
+            },
+            "tx_overruns": {
+              "type": "long"
+            },
+            "tx_bytes": {
+              "type": "long"
+            }
+          }
+        },
+        "network": {
+          "type": "string"
+        },
+        "throttling_rate_limit_remaining": {
+          "type": "long"
+        },
+        "database": {
+          "type": "string"
+        },
+        "content_type": {
+          "type": "string"
+        },
+        "grant_type": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "sub_type": {
+          "type": "string"
+        },
+        "throttling_rate_limit": {
+          "type": "long"
+        },
+        "database_info": {
+          "properties": {
+            "is_prepare": {
+              "type": "boolean"
+            },
+            "pool_size": {
+              "type": "long"
+            },
+            "ip": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "query": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "data_source_type": {
+              "type": "string"
+            },
+            "url_prefix": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "seconds_behind": {
+              "type": "long"
+            },
+            "port": {
+              "type": "string"
+            },
+            "provider": {
+              "type": "string"
+            },
+            "user_id": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "action": {
+              "type": "string"
+            },
+            "jdbc_driver": {
+              "type": "string"
+            },
+            "pool_in_use": {
+              "type": "long"
+            },
+            "data_source_name": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "pool_available": {
+              "type": "long"
+            }
+          }
+        },
+        "auth_error_code": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "class": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "application_version": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "authentication": {
+          "type": "string"
+        },
+        "auth_type": {
+          "type": "string"
+        },
+        "auth_result": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "cpu_used_percent": {
+          "type": "long"
+        },
+        "server_host": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "http_connection_pool_in_use": {
+          "type": "long"
+        },
+        "datacenter": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "api_version": {
+          "type": "string"
+        },
+        "uri": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "environment": {
+          "type": "string"
+        },
+        "@timestamp": {
+          "format": "strict_date_optional_time||epoch_millis",
+          "type": "date"
+        },
+        "thread_pool_size": {
+          "type": "long"
+        },
+        "http_status": {
+          "type": "long"
+        },
+        "category": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "throttling_concurrent_calls_active": {
+          "type": "long"
+        },
+        "http_connection_pool_size": {
+          "type": "long"
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "token_count_info": {
+          "properties": {
+            "query": {
+              "index": "not_analyzed",
+              "type": "string"
+            },
+            "count_value": {
+              "type": "long"
+            }
+          }
+        },
+        "username": {
+          "index": "not_analyzed",
+          "type": "string"
+        }
+      }
+    }
+  },
+  "aliases": {}
+}

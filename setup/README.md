@@ -65,3 +65,9 @@ images to the local registry)
 - http://pi-load-balancer:5000/stats (HA Proxy Stats)
 - http://pi-grom-load-balancer:5000/stats (HA Proxy Stats)
 - http://pi-thrall-load-balancer:5000/stats (HA Proxy Stats)
+
+## Setup Metrics
+- To run Metrics, use Docker Compose to start an ElasticSearch, Logstash, Kibana environment.
+- Execute docker-compose up elk. Then you can just stop / start the container.
+- Add the metrics.json into ElasticSearch: curl http://pi-elastic-01:9200/_template/tribe_template -d @metrics.json
+- Import the dashboards. Use the file import.json and go to Kibana / Settings / Objects / Import
