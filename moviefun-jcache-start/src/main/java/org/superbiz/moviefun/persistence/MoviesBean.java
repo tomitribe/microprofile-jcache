@@ -16,8 +16,6 @@
  */
 package org.superbiz.moviefun.persistence;
 
-import javax.cache.annotation.CacheKey;
-import javax.cache.annotation.CacheValue;
 import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -45,17 +43,17 @@ public class MoviesBean {
     @PersistenceContext(unitName = "movie-unit")
     private EntityManager entityManager;
 
-    public Movie find(@CacheKey final Long id) {
+    public Movie find(final Long id) {
         return entityManager.find(Movie.class, id);
     }
 
     @Transactional(REQUIRED)
-    public void addMovie(@CacheKey @CacheValue final Movie movie) {
+    public void addMovie(final Movie movie) {
         entityManager.persist(movie);
     }
 
     @Transactional(REQUIRED)
-    public void editMovie(@CacheKey @CacheValue final Movie movie) {
+    public void editMovie(final Movie movie) {
         entityManager.merge(movie);
     }
 

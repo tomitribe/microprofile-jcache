@@ -43,6 +43,9 @@
 
     <!-- Dependencies -->
     <dependency.version.javaee>7.0</dependency.version.javaee>
+    <dependency.version.jcache>1.0.0</dependency.version.jcache>
+    <dependency.version.jcache-cdi>0.1-SNAPSHOT</dependency.version.jcache-cdi>
+    <dependency.version.hazelcast>3.8.1</dependency.version.hazelcast>
     <dependency.version.mysql>5.1.42</dependency.version.mysql>
 
     <dependency.version.junit>4.12</dependency.version.junit>
@@ -142,6 +145,24 @@
       <artifactId>javaee-api</artifactId>
       <version>${dependency.version.javaee}</version>
       <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.cache</groupId>
+      <artifactId>cache-api</artifactId>
+      <version>${dependency.version.jcache}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.hazelcast</groupId>
+      <artifactId>hazelcast</artifactId>
+      <version>${dependency.version.hazelcast}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.tomitribe</groupId>
+      <artifactId>jcache-cdi</artifactId>
+      <version>${dependency.version.jcache-cdi}</version>
     </dependency>
 
     <dependency>
