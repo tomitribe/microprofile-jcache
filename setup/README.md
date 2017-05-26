@@ -22,13 +22,14 @@ Use the following commands to flash the SD Cards:
 These instructions are for the Edge Router https://www.ubnt.com/edgemax/edgerouter-x/ :
 
 - Login into the router with ubnt / ubnt.
-- Go to izards / WAN + 2LAN2 to set up DHCP Server (Used 10.99.99.1 / 255.255.255.0)
+- Go to Wizards / WAN + 2LAN2 to set up DHCP Server (Used 10.99.99.1 / 255.255.255.0)
 - Go to Services / LAN / View Details / Leases / Map Static IP (Map PI's MAC Addresses to static IPs)
 - Go to Configuration / dhcp-server / hostfile-update and set to "enable". (This will register the PI's hostnames in the hosts files and they will be reachable via DNS)
-- Set manual hostname for local docker registry (own box - using 10.99.99.11)
+- Set manual hostname for local docker registry and elk (own box - using 10.99.99.11)
     - Login into the router with ssh and ubnt / ubnt and type the commands:
         - configure
         - set system static-host-mapping host-name docker-repo inet 10.99.99.11
+        - set system static-host-mapping host-name pi-elastic-01 inet 10.99.99.11
         - commit
         - save
         - exit
@@ -50,7 +51,7 @@ Registry. They also need to be added to the local Docker Registry host. For Macs
 Run the following Ansible playbooks in order:
 - ansible-playbook docker-repo/install-repo-certs.yaml -i hosts -f 12
 - reboot PI's (docker needs a restart to use the certificate)
-- ansible-playbook load-balancerns/load-balancers.yaml -i hosts -f 3
+- ansible-playbook load-balancers/load-balancers.yaml -i hosts -f 3
 - ansible-playbook install-tomee.yaml -i hosts -f 8
 - ansible-playbook databases/install-mysql.yaml -i hosts -f 2
 
