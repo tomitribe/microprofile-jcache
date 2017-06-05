@@ -69,6 +69,7 @@ images to the local registry)
 
 ## Setup Metrics
 - To run Metrics, use Docker Compose to start an ElasticSearch, Logstash, Kibana environment.
-- Execute docker-compose up elk. Then you can just stop / start the container.
-- Add the metrics.json into ElasticSearch: curl http://pi-elastic-01:9200/_template/tribe_template -d @metrics.json
-- Import the dashboards. Use the file import.json and go to Kibana / Settings / Objects / Import
+- Execute ```docker-compose up -d elk```. Then you can just stop / start the container with ```docker stop elk``` and ```docker start elk``` 
+- Add the template.json into ElasticSearch: ```curl http://pi-elastic-01:9200/_template/tribe_template -d @template.json```
+- Add the initial Kibana index pattern. Go to Kibana / Settings / Indices / Index name or pattern = tribe-metrics-* and Time-field name = @timestamp
+- Import the dashboards. Use the file ```visualizations.json``` and go to Kibana / Settings / Objects / Import
