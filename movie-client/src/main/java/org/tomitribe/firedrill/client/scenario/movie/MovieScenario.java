@@ -121,6 +121,6 @@ public class MovieScenario extends ScenarioInvoker {
     private Integer getRandomMovie() {
         final WebTarget webTarget = client.target(targetUrl).path("movie/rest/movies").queryParam("max", 50);
         final List<Movie> movies = webTarget.request().get(new GenericType<List<Movie>>() {});
-        return movies.stream().findAny().map(Movie::getId).orElse(1);
+        return movies.get((int) (Math.random() * movies.size())).getId();
     }
 }
