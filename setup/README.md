@@ -48,12 +48,16 @@ Registry. They also need to be added to the local Docker Registry host. For Macs
 (docker-repo:5000), in the Mac Docker Daemon / Preferences / Daemon / Insecure Registries.
 
 ## Setup PI's
+Ansible needs to be installed first on the laptop and the following commands straight from the laptop terminal. It will use the information from the docker-repo/ directory.
+
 Run the following Ansible playbooks in order:
-- ansible-playbook docker-repo/install-repo-certs.yaml -i hosts -f 12
+- ansible-playbook docker-repo/install-repo-cert.yaml -i hosts -f 12
 - reboot PI's (docker needs a restart to use the certificate)
 - ansible-playbook load-balancers/load-balancers.yaml -i hosts -f 3
 - ansible-playbook install-tomee.yaml -i hosts -f 8
 - ansible-playbook databases/install-mysql.yaml -i hosts -f 2
+
+WARNING: if you get an error related to sshpass not being installed, you can either install it on your system or add `--ask-pass` to the previous commands
 
 ## Add Applications (Client and Server)
 - Build client and server with ```mvn clean install docker:build -DpushImage``` (this should build and upload the docker
